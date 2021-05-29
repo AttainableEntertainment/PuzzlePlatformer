@@ -14,10 +14,15 @@ class PUZZLEPLATFORMER_API AMovingPlatform : public AStaticMeshActor
 {
 	GENERATED_BODY()
 
+protected:
+	virtual void BeginPlay() override;
 public:
 	AMovingPlatform();
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY(EditAnywhere)
 	float Speed = 10.0f;
+
+	UPROPERTY(EditAnywhere, Meta = (MakeEditWidget = true))
+	FVector TargetLocation;
 };
