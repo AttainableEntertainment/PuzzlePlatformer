@@ -24,28 +24,42 @@ void AMovingPlatform::BeginPlay()
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	if (HasAuthority())
+	if (ActiveTriggers > 0)
 	{
-		//gets the actors world location
-		FVector Location = GetActorLocation();
-
-		float JourneyLength = (GlobalTargetLocation - GlobalStartLocation).Size();
-		float JourneyTravelled = (Location - GlobalStartLocation).Size();
-
-		if (JourneyTravelled >= JourneyLength)
+		if (HasAuthority())
 		{
-			FVector Swap = GlobalStartLocation;
-			GlobalStartLocation = GlobalTargetLocation;
-			GlobalTargetLocation = Swap;
+			//gets the actors world location
+			FVector Location = GetActorLocation();
+
+			float JourneyLength = (GlobalTargetLocation - GlobalStartLocation).Size();
+			float JourneyTravelled = (Location - GlobalStartLocation).Size();
+
+			if (JourneyTravelled >= JourneyLength)
+			{
+				FVector Swap = GlobalStartLocation;
+				GlobalStartLocation = GlobalTargetLocation;
+				GlobalTargetLocation = Swap;
+			}
+			//gets the direction by using the formula A-B gets the direction then normalize to get proper scaling of direction
+			FVector Direction = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
+
+			//updates location to add a vector direction based on speed and delta time 
+			Location += Speed * DeltaTime * Direction;
+
+			//sets the new location to this actor 
+			SetActorLocation(Location);
 		}
-		//gets the direction by using the formula A-B gets the direction then normalize to get proper scaling of direction
-		FVector Direction = (GlobalTargetLocation - GlobalStartLocation).GetSafeNormal();
+	}	
+}
+void AMovingPlatform::AddActiveTrigger()
+{
+	ActiveTriggers++;
+}
 
-
-		//updates location to add a vector direction based on speed and delta time 
-		Location += Speed * DeltaTime*Direction; 
-		//sets the new location to this actor 
-		SetActorLocation(Location);
+void AMovingPlatform::RemoveActiveTrigger()
+{
+	if (ActiveTriggers > 0)
+	{
+		ActiveTriggers--;
 	}
 }
