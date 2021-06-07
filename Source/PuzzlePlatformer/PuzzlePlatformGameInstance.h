@@ -17,4 +17,11 @@ class PUZZLEPLATFORMER_API UPuzzlePlatformGameInstance : public UGameInstance
 public:
 	UPuzzlePlatformGameInstance(const FObjectInitializer& ObjectInitializer);
 	virtual void Init() override;
+
+	UFUNCTION(Exec)
+	void Host();
+
+
+	UFUNCTION(Exec)
+	void Join(const FString& Address);
 };
