@@ -4,8 +4,26 @@
 #include "MainMenu.h"
 #include "Components/Button.h"
 
-UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer):Super(ObjectInitializer)
+bool UMainMenu::Initialize()
 {
-	
+	bool Success = Super::Initialize();
+	if (!Success) return false;
+
+	if (!ensure(Host!= nullptr)) return false;
+
+	Host->OnClicked.AddDynamic(this, &UMainMenu::HostClicked);
+
+	return true;
+
+}
+void UMainMenu::HostClicked() 
+{
+	if (!ensure(MenuInterface!= nullptr)) return;
+
+	MenuInterface->Host();
+}
+void UMainMenu::SetMenuInterface(IMenuInterface* Interface)
+{
+	this->MenuInterface = Interface;
 }
 

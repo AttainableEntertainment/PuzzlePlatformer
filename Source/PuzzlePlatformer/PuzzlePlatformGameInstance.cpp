@@ -4,6 +4,8 @@
 #include "PuzzlePlatformGameInstance.h"
 #include "Engine/Engine.h"
 #include "Blueprint/UserWidget.h"
+#include "Widgets/MainMenu.h"
+
 
 
 
@@ -22,7 +24,7 @@ void UPuzzlePlatformGameInstance::Init()
 }
 void UPuzzlePlatformGameInstance::LoadMenu()
 {
-	UUserWidget* Widget=CreateWidget(this,MenuClass);
+	UMainMenu* Widget=CreateWidget<UMainMenu>(this,MenuClass);
 	if (!ensure(Widget!= nullptr)) return;
 
 	Widget->AddToViewport();
@@ -38,8 +40,10 @@ void UPuzzlePlatformGameInstance::LoadMenu()
 	PlayerController->SetInputMode(InputMode);
 	PlayerController->bShowMouseCursor=true;
 
+	Widget->SetMenuInterface(this);
+
 }
-void UPuzzlePlatformGameInstance::Host()
+void UPuzzlePlatformGameInstance::Host() 
 {
 	UEngine* Engine = GetEngine();
 	if (!ensure(Engine!= nullptr)) return;
