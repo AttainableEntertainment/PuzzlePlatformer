@@ -3,15 +3,21 @@
 
 #include "MainMenu.h"
 #include "Components/Button.h"
+#include "Components/WidgetSwitcher.h"
 
 bool UMainMenu::Initialize()
 {
 	bool Success = Super::Initialize();
 	if (!Success) return false;
 
-	if (!ensure(Host!= nullptr)) return false;
+	if (!ensure(HostButton!= nullptr)) return false;
+	HostButton->OnClicked.AddDynamic(this, &UMainMenu::HostClicked);
 
-	Host->OnClicked.AddDynamic(this, &UMainMenu::HostClicked);
+	if (!ensure(JoinButton != nullptr)) return false;
+	JoinButton->OnClicked.AddDynamic(this, &UMainMenu::JoinButtonClicked);
+
+	if (!ensure(BackButton != nullptr)) return false;
+	BackButton->OnClicked.AddDynamic(this, &UMainMenu::BackButtonClicked);
 
 	return true;
 
@@ -51,6 +57,20 @@ void UMainMenu::HostClicked()
 	if (!ensure(MenuInterface!= nullptr)) return;
 
 	MenuInterface->Host();
+}
+void UMainMenu::JoinButtonClicked()
+{
+	if (!ensure(MenuSwitcher!= nullptr)) return;
+	if (!ensure(JoinMenu!= nullptr)) return;
+
+	MenuSwitcher->SetActiveWidget(JoinMenu);
+}
+void UMainMenu::BackButtonClicked()
+{
+	if (!ensure(MenuSwitcher != nullptr)) return;
+	if (!ensure(MainMenu != nullptr)) return;
+
+	MenuSwitcher->SetActiveWidget(MainMenu);
 }
 void UMainMenu::SetMenuInterface(IMenuInterface* Interface)
 {
