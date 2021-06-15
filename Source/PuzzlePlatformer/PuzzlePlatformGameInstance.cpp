@@ -5,6 +5,7 @@
 #include "Engine/Engine.h"
 #include "Blueprint/UserWidget.h"
 #include "Widgets/MainMenu.h"
+#include "Widgets/ExitMenu.h"
 
 
 
@@ -12,10 +13,14 @@
 UPuzzlePlatformGameInstance::UPuzzlePlatformGameInstance(const FObjectInitializer& ObjectInitializer)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Constructor"));
+
 	ConstructorHelpers::FClassFinder<UUserWidget> MenuBPClass(TEXT("/Game/UserInterface/WBP_MainMenu"));
 	if (!ensure(MenuBPClass.Class!= nullptr)) return;
-
 	MenuClass = MenuBPClass.Class;
+
+	ConstructorHelpers::FClassFinder<UUserWidget> ExitMenuBPClass(TEXT("/Game/UserInterface/WBP_ExitMenu"));
+	if (!ensure(ExitMenuBPClass.Class != nullptr)) return;
+	ExitMenuClass = ExitMenuBPClass.Class;
 }
 
 void UPuzzlePlatformGameInstance::Init()
@@ -31,6 +36,15 @@ void UPuzzlePlatformGameInstance::LoadMenu()
 
 	Widget->SetMenuInterface(this);
 
+}
+void UPuzzlePlatformGameInstance::LoadExitMenu()
+{
+	ExitWidget = CreateWidget<UExitMenu>(this, ExitMenuClass);
+	if (!ensure(ExitWidget != nullptr)) return;
+
+	//Widget->Setup();
+
+	//Widget->SetMenuInterface(this);
 }
 void UPuzzlePlatformGameInstance::Host() 
 {
