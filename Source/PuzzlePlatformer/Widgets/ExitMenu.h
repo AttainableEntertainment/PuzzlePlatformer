@@ -14,4 +14,18 @@ class PUZZLEPLATFORMER_API UExitMenu : public UMenuBase
 {
 	GENERATED_BODY()
 public:
+protected:
+	virtual bool Initialize() override;
+private:
+	UPROPERTY(meta = (BindWidget))
+	class UButton* MainMenuButton;
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* ExitGameButton;
+
+	UFUNCTION()
+	void MainMenuButtonClicked();
+
+	UFUNCTION()
+	void ExitGameButtonClicked();
 };

@@ -27,24 +27,15 @@ void UPuzzlePlatformGameInstance::Init()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Widget Class found=%s"),*MenuClass->GetName());
 }
-void UPuzzlePlatformGameInstance::LoadMenu()
+void UPuzzlePlatformGameInstance::LoadMenu(TSubclassOf<UUserWidget> WidgetClass)
 {
-	Widget=CreateWidget<UMainMenu>(this,MenuClass);
+	Widget=CreateWidget<UMenuBase>(this,WidgetClass);
 	if (!ensure(Widget!= nullptr)) return;
 
 	Widget->Setup();
 
 	Widget->SetMenuInterface(this);
 
-}
-void UPuzzlePlatformGameInstance::LoadExitMenu()
-{
-	ExitWidget = CreateWidget<UExitMenu>(this, ExitMenuClass);
-	if (!ensure(ExitWidget != nullptr)) return;
-
-	//Widget->Setup();
-
-	//Widget->SetMenuInterface(this);
 }
 void UPuzzlePlatformGameInstance::Host() 
 {

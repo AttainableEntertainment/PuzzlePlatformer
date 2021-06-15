@@ -20,9 +20,9 @@ public:
 
 
 protected:
+	virtual bool Initialize() override;
 	class IMenuInterface* MenuInterface;
 	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
-
 
 private:
 	UPROPERTY()

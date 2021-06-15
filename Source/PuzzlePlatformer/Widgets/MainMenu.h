@@ -3,23 +3,21 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "MenuBase.h"
 #include "MainMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class PUZZLEPLATFORMER_API UMainMenu : public UUserWidget
+class PUZZLEPLATFORMER_API UMainMenu : public UMenuBase
 {
 	GENERATED_BODY()
 public:
-	void SetMenuInterface(class IMenuInterface* Interface);
-	void Setup();
+
 protected:
 	virtual bool Initialize() override;
 
-	virtual void OnLevelRemovedFromWorld(ULevel* InLevel, UWorld* InWorld) override;
 private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* HostButton;
@@ -56,6 +54,6 @@ private:
 	UFUNCTION()
 	void JoinIPButtonClicked();
 
-	class IMenuInterface* MenuInterface;
+
 
 };

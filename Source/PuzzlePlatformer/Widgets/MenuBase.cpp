@@ -5,6 +5,13 @@
 #include "MenuInterface.h"
 
 
+bool UMenuBase::Initialize()
+{
+	bool Success = Super::Initialize();
+	if (!Success) return false;
+
+	return true;
+}
 void UMenuBase::Setup()
 {
 	this->AddToViewport();

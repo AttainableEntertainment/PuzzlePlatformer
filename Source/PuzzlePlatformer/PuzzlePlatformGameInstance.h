@@ -20,10 +20,7 @@ public:
 	virtual void Init() override;
 
 	UFUNCTION(Exec,BlueprintCallable)
-	void LoadMenu();
-
-	UFUNCTION(Exec, BlueprintCallable)
-	void LoadExitMenu();
+	void LoadMenu(TSubclassOf<class UUserWidget> WidgetClass);
 
 	UFUNCTION(Exec)
 	void Host();
@@ -37,6 +34,6 @@ private:
 	UPROPERTY()
 	TSubclassOf<class UUserWidget> ExitMenuClass;
 
-	class UMainMenu* Widget;
-	class UExitMenu* ExitWidget;
+	class UMenuBase* Widget;
+
 };
