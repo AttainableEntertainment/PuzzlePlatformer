@@ -35,7 +35,7 @@ void UPuzzlePlatformGameInstance::LoadMenu(TSubclassOf<UUserWidget> WidgetClass)
 	Widget->Setup();
 
 	Widget->SetMenuInterface(this);
-
+	
 }
 void UPuzzlePlatformGameInstance::Host() 
 {
@@ -60,4 +60,11 @@ void UPuzzlePlatformGameInstance::Join(const FString& Address)
 	PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController!= nullptr)) return;
 	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+}
+void UPuzzlePlatformGameInstance::LoadMainMenu()
+{
+	APlayerController* PlayerController;
+	PlayerController = GetFirstLocalPlayerController();
+	if (!ensure(PlayerController != nullptr)) return;
+	PlayerController->ClientTravel("/Game/ThirdPersonBP/Maps/L_MainMenu", ETravelType::TRAVEL_Absolute);
 }

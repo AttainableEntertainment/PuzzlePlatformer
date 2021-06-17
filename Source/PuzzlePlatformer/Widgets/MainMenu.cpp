@@ -23,6 +23,9 @@ bool UMainMenu::Initialize()
 	if (!ensure(JoinIPButton != nullptr)) return false;
 	JoinIPButton->OnClicked.AddDynamic(this, &UMainMenu::JoinIPButtonClicked);
 
+	if (!ensure(QuitButton != nullptr)) return false;
+	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitButtonClicked);
+
 	return true;
 
 }
@@ -53,6 +56,10 @@ void UMainMenu::JoinIPButtonClicked()
 	 if (!ensure(IPAddress != nullptr)) return;
 
 	MenuInterface->Join(IPAddress->GetText().ToString());
+}
+void UMainMenu::QuitButtonClicked()
+{
+	GetOwningPlayer()->ConsoleCommand("Quit");
 }
 
 

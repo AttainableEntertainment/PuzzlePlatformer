@@ -18,13 +18,13 @@ protected:
 	virtual bool Initialize() override;
 private:
 	UPROPERTY(meta = (BindWidget))
-	class UButton* MainMenuButton;
+	class UButton* CancelButton;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* ExitGameButton;
 
 	UFUNCTION()
-	void MainMenuButtonClicked();
+	void CancelButtonClicked();
 
 	UFUNCTION()
 	void ExitGameButtonClicked();
