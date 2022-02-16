@@ -6,7 +6,14 @@
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
 #include "MenuInterface.h"
+#include "ServerRow.h"
 
+UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer)
+{
+	ConstructorHelpers::FClassFinder<UUserWidget> ServerRowBPClass(TEXT("/Game/UserInterface/WBP_ServerRow"));
+	if (!ensure(ServerRowBPClass.Class != nullptr)) return;
+	ServerClass = ServerRowBPClass.Class;
+}
 bool UMainMenu::Initialize()
 {
 	Super::Initialize();
@@ -52,10 +59,16 @@ void UMainMenu::BackButtonClicked()
 }
 void UMainMenu::JoinIPButtonClicked()
 {
-	 if (!ensure(MenuInterface!= nullptr)) return;
-	 if (!ensure(IPAddress != nullptr)) return;
+	// if (!ensure(MenuInterface!= nullptr)) return;
+	// if (!ensure(IPAddress != nullptr)) return;
+	//MenuInterface->Join(IPAddress->GetText().ToString());
+	UWorld* World=this->GetWorld();
+	if (!ensure(World != nullptr)) return;
 
-	MenuInterface->Join(IPAddress->GetText().ToString());
+	UServerRow* Row= CreateWidget<UServerRow>(World, ServerClass);
+	if (!ensure(Row != nullptr)) return;
+
+	ServerList->AddChild(Row);
 }
 void UMainMenu::QuitButtonClicked()
 {

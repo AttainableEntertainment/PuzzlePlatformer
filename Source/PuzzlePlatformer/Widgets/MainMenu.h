@@ -14,7 +14,7 @@ class PUZZLEPLATFORMER_API UMainMenu : public UMenuBase
 {
 	GENERATED_BODY()
 public:
-
+	UMainMenu(const FObjectInitializer& ObjectInitializer);
 protected:
 	virtual bool Initialize() override;
 
@@ -41,10 +41,13 @@ private:
 	class UWidget* MainMenu;
 
 	UPROPERTY(meta = (BindWidget))
-	class UEditableTextBox* IPAddress;
+	class UPanelWidget* ServerList;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* JoinIPButton;
+
+	UPROPERTY()
+	TSubclassOf<class UUserWidget> ServerClass;
 
 
 

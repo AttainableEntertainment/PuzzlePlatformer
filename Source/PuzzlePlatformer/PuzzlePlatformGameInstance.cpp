@@ -70,10 +70,6 @@ void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session"));
 
-		if (SessionSearch->SearchResults.IsValidIndex(0))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Is valid index is true"));
-		}
 		for(const FOnlineSessionSearchResult& Result : SessionSearch->SearchResults)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Session found named:%s"), *Result.GetSessionIdStr());
