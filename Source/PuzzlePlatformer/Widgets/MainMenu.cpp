@@ -5,6 +5,7 @@
 #include "Components/Button.h"
 #include "Components/WidgetSwitcher.h"
 #include "Components/EditableTextBox.h"
+#include "Components/TextBlock.h"
 #include "MenuInterface.h"
 #include "ServerRow.h"
 
@@ -67,6 +68,10 @@ void UMainMenu::JoinIPButtonClicked()
 
 	UServerRow* Row= CreateWidget<UServerRow>(World, ServerClass);
 	if (!ensure(Row != nullptr)) return;
+
+	//set server row textbox name
+
+	Row->ServerName->SetText(FText::FromString(TEXT("Test Text")));
 
 	ServerList->AddChild(Row);
 }
