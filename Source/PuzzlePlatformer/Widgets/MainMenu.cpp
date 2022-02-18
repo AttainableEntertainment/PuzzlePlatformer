@@ -60,24 +60,41 @@ void UMainMenu::BackButtonClicked()
 }
 void UMainMenu::JoinIPButtonClicked()
 {
-	// if (!ensure(MenuInterface!= nullptr)) return;
-	// if (!ensure(IPAddress != nullptr)) return;
-	//MenuInterface->Join(IPAddress->GetText().ToString());
-	UWorld* World=this->GetWorld();
-	if (!ensure(World != nullptr)) return;
+	//if (!ensure(MenuInterface!= nullptr)) return;
+	//if (!ensure(IPAddress != nullptr)) return;
+	MenuInterface->Join("");
 
-	UServerRow* Row= CreateWidget<UServerRow>(World, ServerClass);
-	if (!ensure(Row != nullptr)) return;
-
-	//set server row textbox name
-
-	Row->ServerName->SetText(FText::FromString(TEXT("Test Text")));
-
-	ServerList->AddChild(Row);
 }
 void UMainMenu::QuitButtonClicked()
 {
 	GetOwningPlayer()->ConsoleCommand("Quit");
+}
+/**
+ * @brief Sets the server list inside the menu
+ * @param ServerNames list of server names
+*/
+void UMainMenu::SetServerList(TArray<FString> ServerNames)
+{
+	//Get world pointer and check if null
+	UWorld* World = this->GetWorld();
+	if (!ensure(World != nullptr)) return;
+
+	//clears list before setting it to avoid repeats 
+	ServerList->ClearChildren();
+
+	for (const FString& ServerName : ServerNames)
+	{
+		//Creates widget server row 
+		UServerRow* Row = CreateWidget<UServerRow>(World, ServerClass);
+		if (!ensure(Row != nullptr)) return;
+
+		//set server row text box name
+		Row->ServerName->SetText(FText::FromString(ServerName));
+
+		//adds server row widget to panelwidget scrollbox serverlist
+		ServerList->AddChild(Row);
+	}
+
 }
 
 

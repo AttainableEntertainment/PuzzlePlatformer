@@ -34,6 +34,9 @@ public:
 	UFUNCTION(Exec)
 	void LoadMainMenu() override;
 
+	UFUNCTION(Exec)
+	void RequestRefresh() override;
+
 private:
 	UPROPERTY()
 	TSubclassOf<class UUserWidget> MenuClass;
@@ -41,7 +44,7 @@ private:
 	UPROPERTY()
 	TSubclassOf<class UUserWidget> ExitMenuClass;
 
-	class UMenuBase* Widget;
+	class UMainMenu* MainMenu;
 
 	IOnlineSessionPtr SessionInterface;
 	TSharedPtr<class FOnlineSessionSearch> SessionSearch;

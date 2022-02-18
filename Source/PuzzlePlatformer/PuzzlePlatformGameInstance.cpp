@@ -32,6 +32,7 @@ void UPuzzlePlatformGameInstance::Init()
 {
 	//UE_LOG(LogTemp, Warning, TEXT("Widget Class found=%s"),*MenuClass->GetName());
 
+	//Gets the null online subsystem 
 	IOnlineSubsystem* Subsystem = IOnlineSubsystem::Get();
 
 	if (Subsystem != nullptr)
@@ -51,6 +52,7 @@ void UPuzzlePlatformGameInstance::Init()
 
 			if (SessionSearch.IsValid())
 			{
+				//settings to make the session findable 
 				SessionSearch->bIsLanQuery = true;
 				UE_LOG(LogTemp, Warning, TEXT("Starting to find sessions"));
 				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
@@ -70,9 +72,11 @@ void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session"));
 
+		
+
 		for(const FOnlineSessionSearchResult& Result : SessionSearch->SearchResults)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Session found named:%s"), *Result.GetSessionIdStr());
+			//UE_LOG(LogTemp, Warning, TEXT("Session found named:%s"), *Result.GetSessionIdStr());
 
 		}
 	}
@@ -103,12 +107,12 @@ void UPuzzlePlatformGameInstance::OnCreateSessionComplete(FName SessionName, boo
 
 void UPuzzlePlatformGameInstance::LoadMenu(TSubclassOf<UUserWidget> WidgetClass)
 {
-	Widget=CreateWidget<UMenuBase>(this,WidgetClass);
-	if (!ensure(Widget!= nullptr)) return;
+	MainMenu=CreateWidget<UMainMenu>(this,WidgetClass);
+	if (!ensure(MainMenu != nullptr)) return;
 
-	Widget->Setup();
+	MainMenu->Setup();
 
-	Widget->SetMenuInterface(this);
+	MainMenu->SetMenuInterface(this);
 	
 }
 void UPuzzlePlatformGameInstance::Host() 
@@ -142,14 +146,19 @@ void UPuzzlePlatformGameInstance::CreateSession()
 void UPuzzlePlatformGameInstance::Join(const FString& Address)
 {
 	
-	UEngine* Engine = GetEngine();
-	if (!ensure(Engine != nullptr)) return;
-	Engine->AddOnScreenDebugMessage(0, 2, FColor::Green,FString::Printf(TEXT("Joining:%s"),*Address));
+	
 
-	APlayerController* PlayerController;
-	PlayerController = GetFirstLocalPlayerController();
-	if (!ensure(PlayerController!= nullptr)) return;
-	PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
+
+	////adds debug message 
+	//UEngine* Engine = GetEngine();
+	//if (!ensure(Engine != nullptr)) return;
+	//Engine->AddOnScreenDebugMessage(0, 2, FColor::Green,FString::Printf(TEXT("Joining:%s"),*Address));
+
+	////travels player to ip address
+	//APlayerController* PlayerController;
+	//PlayerController = GetFirstLocalPlayerController();
+	//if (!ensure(PlayerController!= nullptr)) return;
+	//PlayerController->ClientTravel(Address, ETravelType::TRAVEL_Absolute);
 }
 void UPuzzlePlatformGameInstance::LoadMainMenu()
 {
@@ -157,4 +166,15 @@ void UPuzzlePlatformGameInstance::LoadMainMenu()
 	PlayerController = GetFirstLocalPlayerController();
 	if (!ensure(PlayerController != nullptr)) return;
 	PlayerController->ClientTravel("/Game/ThirdPersonBP/Maps/L_MainMenu", ETravelType::TRAVEL_Absolute);
+}
+
+/**
+ * @brief Tries to find and refresh the list of servers 
+*/
+void UPuzzlePlatformGameInstance::RequestRefresh()
+{
+	if (!ensure(MainMenu != nullptr)) return;
+
+	//add server names 
+	MainMenu->SetServerList({ "test1","test2" });
 }
