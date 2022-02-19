@@ -48,8 +48,13 @@ void UMainMenu::JoinButtonClicked()
 {
 	if (!ensure(MenuSwitcher!= nullptr)) return;
 	if (!ensure(JoinMenu!= nullptr)) return;
-
 	MenuSwitcher->SetActiveWidget(JoinMenu);
+	if (MenuInterface != nullptr)
+	{
+		MenuInterface->RequestRefresh();
+	}
+
+
 }
 void UMainMenu::BackButtonClicked()
 {

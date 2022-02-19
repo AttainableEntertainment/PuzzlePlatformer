@@ -47,16 +47,7 @@ void UPuzzlePlatformGameInstance::Init()
 			SessionInterface->OnDestroySessionCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnDestroySessionComplete);
 			SessionInterface->OnFindSessionsCompleteDelegates.AddUObject(this, &UPuzzlePlatformGameInstance::OnFindSessionsComplete);
 
-			//find online session 
-			SessionSearch = MakeShareable(new FOnlineSessionSearch);
-
-			if (SessionSearch.IsValid())
-			{
-				//settings to make the session findable 
-				SessionSearch->bIsLanQuery = true;
-				UE_LOG(LogTemp, Warning, TEXT("Starting to find sessions"));
-				SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
-			}
+			
 		}
 	}
 	else
@@ -68,17 +59,19 @@ void UPuzzlePlatformGameInstance::Init()
 }
 void UPuzzlePlatformGameInstance::OnFindSessionsComplete(bool Success)
 {
-	if (Success && SessionSearch.IsValid())
+
+	if (Success && SessionSearch.IsValid() && MainMenu !=nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Found session"));
 
-		
+		TArray<FString> ServerNames;
 
 		for(const FOnlineSessionSearchResult& Result : SessionSearch->SearchResults)
 		{
-			//UE_LOG(LogTemp, Warning, TEXT("Session found named:%s"), *Result.GetSessionIdStr());
-
+			UE_LOG(LogTemp, Warning, TEXT("Session found named:%s"), *Result.GetSessionIdStr());
+			ServerNames.Add(Result.GetSessionIdStr());
 		}
+		MainMenu->SetServerList(ServerNames);
 	}
 }
 void UPuzzlePlatformGameInstance::OnDestroySessionComplete(FName SessionName, bool Success)
@@ -109,11 +102,8 @@ void UPuzzlePlatformGameInstance::LoadMenu(TSubclassOf<UUserWidget> WidgetClass)
 {
 	MainMenu=CreateWidget<UMainMenu>(this,WidgetClass);
 	if (!ensure(MainMenu != nullptr)) return;
-
 	MainMenu->Setup();
-
 	MainMenu->SetMenuInterface(this);
-	
 }
 void UPuzzlePlatformGameInstance::Host() 
 {
@@ -145,10 +135,6 @@ void UPuzzlePlatformGameInstance::CreateSession()
 }
 void UPuzzlePlatformGameInstance::Join(const FString& Address)
 {
-	
-	
-
-
 	////adds debug message 
 	//UEngine* Engine = GetEngine();
 	//if (!ensure(Engine != nullptr)) return;
@@ -173,8 +159,14 @@ void UPuzzlePlatformGameInstance::LoadMainMenu()
 */
 void UPuzzlePlatformGameInstance::RequestRefresh()
 {
-	if (!ensure(MainMenu != nullptr)) return;
+	//find online session 
+	SessionSearch = MakeShareable(new FOnlineSessionSearch);
 
-	//add server names 
-	MainMenu->SetServerList({ "test1","test2" });
+	if (SessionSearch.IsValid())
+	{
+		//settings to make the session findable 
+		SessionSearch->bIsLanQuery = true;
+		UE_LOG(LogTemp, Warning, TEXT("Starting to find sessions"));
+		SessionInterface->FindSessions(0, SessionSearch.ToSharedRef());
+	}
 }
